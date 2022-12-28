@@ -30,6 +30,33 @@ HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_E
     NANOCLR_NOCLEANUP();
 }
 
+HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannel::
+    NativeSetNumberOfMemoryBlocks___VOID__U1(CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        int32_t channel;
+        uint8_t rmt_mem_num;
+
+        CLR_RT_HeapBlock *pThis = stack.This();
+        FAULT_ON_NULL(pThis);
+
+        channel = (int32_t)pThis[FIELD___channel].NumericByRef().s4;
+        if (!CheckChannel(channel))
+        {
+            NANOCLR_SET_AND_LEAVE(CLR_E_OBJECT_DISPOSED);
+        }
+
+        rmt_mem_num = (uint8_t)pThis[FIELD___numberOfMemoryBlocks].NumericByRef().u1;
+        auto err = rmt_set_mem_block_num((rmt_channel_t)channel, rmt_mem_num);
+        if (err != ESP_OK)
+        {
+            NANOCLR_SET_AND_LEAVE(CLR_E_INVALID_PARAMETER);
+        }
+    }
+    NANOCLR_NOCLEANUP();
+}
+
 //
 //  Search map for next free Channel and return channel number.
 //  return -1 if no free channels.

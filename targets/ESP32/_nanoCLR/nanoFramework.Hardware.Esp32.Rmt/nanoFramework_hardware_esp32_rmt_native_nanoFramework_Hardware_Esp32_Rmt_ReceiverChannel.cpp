@@ -33,6 +33,72 @@ HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_E
     NANOCLR_NOCLEANUP();
 }
 
+HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_ReceiverChannel::NativeRxInit___I4( CLR_RT_StackFrame &stack )
+{
+    NANOCLR_HEADER();
+    {
+        CLR_RT_HeapBlock *receiver_channel_settings = NULL;
+        int32_t channel;
+        int32_t pin_number;
+        int32_t ring_buff_size;
+
+        // get a pointer to the managed object instance and check that it's not NULL
+        CLR_RT_HeapBlock *pThis = stack.This();
+        FAULT_ON_NULL(pThis);
+
+        // get a reference to the configs in the managed code instance
+        receiver_channel_settings = pThis[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_ReceiverChannel::FIELD___settings].Dereference();
+
+        channel = receiver_channel_settings[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannelSettings::FIELD__channel].NumericByRef().s4;
+        pin_number = receiver_channel_settings[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannelSettings::FIELD__pinNumber].NumericByRef().s4;
+
+        if (channel < 0)
+        {
+            channel = RmtChannel::FindNextChannel();
+            if (channel < 0)
+            {
+                NANOCLR_SET_AND_LEAVE(CLR_E_DRIVER_NOT_REGISTERED);
+            }
+        }
+
+        rmt_config_t rmt_rx_config = RMT_DEFAULT_CONFIG_RX((gpio_num_t)pin_number, (rmt_channel_t)channel);
+        rmt_rx_config.clk_div = receiver_channel_settings[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannelSettings::FIELD__clockDivider].NumericByRef().u1;
+        rmt_rx_config.mem_block_num = receiver_channel_settings[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannel::FIELD___numberOfMemoryBlocks].NumericByRef().u1;
+        rmt_rx_config.rx_config.idle_threshold = receiver_channel_settings[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_ReceiverChannelSettings::FIELD__idleThreshold].NumericByRef().u2;
+        rmt_rx_config.rx_config.filter_en = receiver_channel_settings[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_ReceiverChannelSettings::FIELD__enableFilter].NumericByRef().u1 != 0;
+        rmt_rx_config.rx_config.filter_ticks_thresh = receiver_channel_settings[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_ReceiverChannelSettings::FIELD__filterThreshold].NumericByRef().u1;
+        auto err = rmt_config(&rmt_rx_config);
+        if (err != ESP_OK)
+        {
+            NANOCLR_SET_AND_LEAVE(CLR_E_DRIVER_NOT_REGISTERED);
+        }
+
+        ring_buff_size = receiver_channel_settings[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannelSettings::FIELD__bufferSize].NumericByRef().s4;
+        ring_buff_size *= sizeof(rmt_item32_t);
+
+        err = rmt_driver_install((rmt_channel_t)channel, ring_buff_size, 0);
+        if (err != ESP_OK)
+        {
+            CLR_EE_DBG_EVENT_BROADCAST(CLR_DBG_Commands_c_Monitor_Message, 35, ">>> RMT Driver Installation Failed!", WP_Flags_c_NonCritical | WP_Flags_c_NoCaching );
+
+            char temporaryStringBuffer[64];
+            int realStringSize=snprintf(temporaryStringBuffer, sizeof(temporaryStringBuffer), "Driver install error: %d\r\n", err);
+            CLR_EE_DBG_EVENT_BROADCAST(CLR_DBG_Commands_c_Monitor_Message, realStringSize, temporaryStringBuffer, WP_Flags_c_NonCritical | WP_Flags_c_NoCaching );
+
+            NANOCLR_SET_AND_LEAVE(CLR_E_DRIVER_NOT_REGISTERED);
+        }
+
+        RmtChannel::registredChannels.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple((rmt_channel_t)channel),
+            std::forward_as_tuple());
+
+        CLR_EE_DBG_EVENT_BROADCAST(CLR_DBG_Commands_c_Monitor_Message, 25, ">>> RMT Driver Installed.", WP_Flags_c_NonCritical | WP_Flags_c_NoCaching );
+        stack.SetResult_I4((CLR_INT32)channel);
+    }
+    NANOCLR_NOCLEANUP();
+}
+
 HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_ReceiverChannel::
     NativeRxStart___VOID__BOOLEAN(CLR_RT_StackFrame &stack)
 {

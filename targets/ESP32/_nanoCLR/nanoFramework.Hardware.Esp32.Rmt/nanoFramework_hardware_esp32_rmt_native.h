@@ -39,8 +39,10 @@ struct Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Es
 
 struct Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_ReceiverChannel
 {
-    static const int FIELD___receiveTimeout = 4;
+    static const int FIELD___settings = 5;
+    static const int FIELD___receiveTimeout = 6;
 
+    NANOCLR_NATIVE_DECLARE(NativeRxInit___I4);
     NANOCLR_NATIVE_DECLARE(NativeRxInit___I4__I4__I4);
     NANOCLR_NATIVE_DECLARE(NativeRxStart___VOID__BOOLEAN);
     NANOCLR_NATIVE_DECLARE(NativeRxStop___VOID);
@@ -65,13 +67,24 @@ struct Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Es
     static esp_err_t InitRxChannel(rmt_channel_t channel, gpio_num_t gpio, int32_t rmtBufferSize, int32_t clockDiv);
 };
 
+struct Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_ReceiverChannelSettings
+{
+    static const int FIELD__idleThreshold = 6;
+    static const int FIELD__enableFilter = 7;
+    static const int FIELD__filterThreshold = 8;
+
+    //--//
+};
+
 struct Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannel
 {
     static const int FIELD___channel = 1;
     static const int FIELD___clockDivider = 2;
     static const int FIELD___sourceClock = 3;
+    static const int FIELD___numberOfMemoryBlocks = 4;
 
     NANOCLR_NATIVE_DECLARE(NativeSetClockDivider___VOID__U1);
+    NANOCLR_NATIVE_DECLARE(NativeSetNumberOfMemoryBlocks___VOID__U1);
 
     //--//
 
@@ -81,13 +94,35 @@ struct Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Es
     static CLR_INT32 FindNextChannel();
 };
 
+struct Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannelSettings
+{
+    static const int FIELD__channel = 1;
+    static const int FIELD__pinNumber = 2;
+    static const int FIELD__clockDivider = 3;
+    static const int FIELD__numberOfMemoryBlocks = 4;
+    static const int FIELD__bufferSize = 5;
+
+    //--//
+};
+
+struct Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_TransmitChannelSettings
+{
+    static const int FIELD__enableCarrierWave = 6;
+    static const int FIELD__carrierWaveFrequency = 7;
+    static const int FIELD__carrierWaveDutyPercentage = 8;
+    static const int FIELD__enableLooping = 9;
+    static const int FIELD__enableIdeLevelOutput = 10;
+
+    //--//
+};
+
 struct Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_TransmitterChannel
 {
-    static const int FIELD___carrierEnabled = 4;
-    static const int FIELD___carrierHighDuration = 5;
-    static const int FIELD___carrierLowDuration = 6;
-    static const int FIELD___carrierLevel = 7;
-    static const int FIELD___commands = 8;
+    static const int FIELD___carrierEnabled = 5;
+    static const int FIELD___carrierHighDuration = 6;
+    static const int FIELD___carrierLowDuration = 7;
+    static const int FIELD___carrierLevel = 8;
+    static const int FIELD___commands = 9;
 
     NANOCLR_NATIVE_DECLARE(NativeInit___VOID__I4);
     NANOCLR_NATIVE_DECLARE(NativeGetIdleLevel___BOOLEAN);
