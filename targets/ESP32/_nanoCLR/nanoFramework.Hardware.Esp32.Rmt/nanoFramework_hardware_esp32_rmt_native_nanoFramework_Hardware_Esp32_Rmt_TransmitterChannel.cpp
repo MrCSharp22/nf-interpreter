@@ -8,6 +8,33 @@
 
 #define DEFAULT_DIVIDER 4
 
+HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_TransmitterChannel::NativeTxInit___I4( CLR_RT_StackFrame &stack )
+{
+    NANOCLR_HEADER();
+
+    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+
+    NANOCLR_NOCLEANUP();
+}
+
+HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_TransmitterChannel::NativeTxGetIsChannelIdle___BOOLEAN( CLR_RT_StackFrame &stack )
+{
+    NANOCLR_HEADER();
+
+    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+
+    NANOCLR_NOCLEANUP();
+}
+
+HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_TransmitterChannel::NativeTxSetLoopingMode___VOID__BOOLEAN( CLR_RT_StackFrame &stack )
+{
+    NANOCLR_HEADER();
+
+    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+
+    NANOCLR_NOCLEANUP();
+}
+
 HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_TransmitterChannel::
     NativeInit___VOID__I4(CLR_RT_StackFrame &stack)
 {
@@ -68,7 +95,7 @@ HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_E
 }
 
 HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_TransmitterChannel::
-    NativeGetIsChannelIdle___BOOLEAN(CLR_RT_StackFrame &stack)
+    NativeTxGetIsChannelIdle___BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
 
@@ -93,31 +120,7 @@ HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_E
 }
 
 HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_TransmitterChannel::
-    NativeSetIsChannelIdle___VOID__BOOLEAN(CLR_RT_StackFrame &stack)
-{
-    NANOCLR_HEADER();
-
-    int32_t channel;
-    bool enabled;
-
-    CLR_RT_HeapBlock *pThis = stack.This();
-    FAULT_ON_NULL(pThis);
-
-    channel = (int32_t)pThis[RmtChannel::FIELD___channel].NumericByRef().s4;
-    enabled = (bool)stack.Arg1().NumericByRef().u1;
-
-    if (!RmtChannel::CheckChannel(channel))
-    {
-        NANOCLR_SET_AND_LEAVE(CLR_E_OBJECT_DISPOSED);
-    }
-
-    ::RMT.conf_ch[(rmt_channel_t)channel].conf1.idle_out_en = enabled;
-
-    NANOCLR_NOCLEANUP();
-}
-
-HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_TransmitterChannel::
-    NativeSetIdleLevel___VOID__BOOLEAN(CLR_RT_StackFrame &stack)
+    NativeTxSetIdleLevel___VOID__BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
 
@@ -141,7 +144,7 @@ HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_E
 }
 
 HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_TransmitterChannel::
-    NativeSetCarrierMode___VOID(CLR_RT_StackFrame &stack)
+    NativeTxSetCarrierMode___VOID(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
 
@@ -178,7 +181,7 @@ HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_E
 }
 
 HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_TransmitterChannel::
-    NativeWriteItems___U4__SZARRAY_U1__BOOLEAN(CLR_RT_StackFrame &stack)
+    NativeTxWriteItems___U4__SZARRAY_U1__BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
 
@@ -217,34 +220,7 @@ HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_E
 }
 
 HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_TransmitterChannel::
-    NativeWaitTxDone___U4__I4(CLR_RT_StackFrame &stack)
-{
-    NANOCLR_HEADER();
-
-    int result = ESP_ERR_TIMEOUT;
-
-    int32_t channel;
-    int32_t wait_time = (int32_t)stack.Arg1().NumericByRef().s4;
-
-    CLR_RT_HeapBlock *pThis = stack.This();
-    FAULT_ON_NULL(pThis);
-
-    channel = (int32_t)pThis[RmtChannel::FIELD___channel].NumericByRef().s4;
-
-    if (!RmtChannel::CheckChannel(channel))
-    {
-        NANOCLR_SET_AND_LEAVE(CLR_E_OBJECT_DISPOSED);
-    }
-
-    result = rmt_wait_tx_done((rmt_channel_t)channel, wait_time);
-
-    stack.SetResult_U4(result);
-
-    NANOCLR_NOCLEANUP();
-}
-
-HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_TransmitterChannel::
-    NativeDispose___VOID(CLR_RT_StackFrame &stack)
+    NativeTxDispose___VOID(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
 
@@ -266,32 +242,6 @@ HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_E
     }
 
     RmtChannel::registredChannels.erase(CHANNEL(channel));
-
-    NANOCLR_NOCLEANUP();
-}
-
-HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_TransmitterChannel::
-    NativeGetSourceClock___BOOLEAN(CLR_RT_StackFrame &stack)
-{
-    NANOCLR_HEADER();
-
-    bool retVal = false;
-
-    int32_t channel;
-
-    CLR_RT_HeapBlock *pThis = stack.This();
-    FAULT_ON_NULL(pThis);
-
-    channel = (int32_t)stack.Arg0().NumericByRef().s4;
-
-    if (!RmtChannel::CheckChannel(channel))
-    {
-        NANOCLR_SET_AND_LEAVE(CLR_E_OBJECT_DISPOSED);
-    }
-
-    retVal = ::RMT.conf_ch[(rmt_channel_t)channel].conf1.ref_always_on;
-
-    stack.SetResult_Boolean(retVal);
 
     NANOCLR_NOCLEANUP();
 }

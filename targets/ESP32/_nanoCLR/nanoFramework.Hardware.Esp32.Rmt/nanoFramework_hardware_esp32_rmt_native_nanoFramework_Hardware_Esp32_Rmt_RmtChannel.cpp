@@ -9,6 +9,35 @@ std::map<rmt_channel_t, std::vector<rmt_item32_t>>
     Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannel::registredChannels;
 
 HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannel::
+    NativeSetGpioPin___VOID__I4__U1__I4__BOOLEAN( CLR_RT_StackFrame &stack )
+{
+    NANOCLR_HEADER();
+
+    rmt_channel_t channel = CHANNEL(stack.Arg1().NumericByRef().s4);
+    uint8_t mode = stack.Arg2().NumericByRef().u1;
+    int32_t pin = stack.Arg3().NumericByRef().s4;
+    bool invert_signal = (bool)stack.Arg4().NumericByRef().u1;
+
+    rmt_mode_t rmt_mode = NULL;
+    if (mode == 0x00)
+    {
+        rmt_mode = RMT_MODE_RX;
+    }
+    else 
+    {
+        rmt_mode = RMT_MODE_TX;
+    }
+
+    auto err = rmt_set_gpio(channel, rmt_mode, pin, invert_signal);
+    if (err != ESP_OK)
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+
+    NANOCLR_NOCLEANUP();
+}
+
+HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannel::
     NativeSetClockDivider___VOID__U1(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
