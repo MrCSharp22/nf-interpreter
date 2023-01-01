@@ -45,7 +45,7 @@ HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_E
             NANOCLR_SET_AND_LEAVE(CLR_E_DRIVER_NOT_REGISTERED);
         }
 
-        ring_buff_size = receiver_channel_settings[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannelSettings::FIELD__bufferSize].NumericByRef().s4;
+        ring_buff_size = receiver_channel_settings[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannelSettings::FIELD___bufferSize].NumericByRef().s4;
         ring_buff_size *= sizeof(rmt_item32_t);
 
         err = rmt_driver_install((rmt_channel_t)channel, ring_buff_size, 0);

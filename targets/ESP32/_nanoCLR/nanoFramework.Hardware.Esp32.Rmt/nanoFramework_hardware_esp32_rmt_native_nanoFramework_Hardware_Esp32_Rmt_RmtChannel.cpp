@@ -18,7 +18,7 @@ HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_E
     int32_t pin = stack.Arg3().NumericByRef().s4;
     bool invert_signal = (bool)stack.Arg4().NumericByRef().u1;
 
-    rmt_mode_t rmt_mode = NULL;
+    rmt_mode_t rmt_mode;
     if (mode == 0x00)
     {
         rmt_mode = RMT_MODE_RX;
@@ -28,7 +28,7 @@ HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_E
         rmt_mode = RMT_MODE_TX;
     }
 
-    auto err = rmt_set_gpio(channel, rmt_mode, pin, invert_signal);
+    auto err = rmt_set_gpio(channel, rmt_mode, (gpio_num_t)pin, invert_signal);
     if (err != ESP_OK)
     {
         NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
@@ -42,13 +42,17 @@ HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_E
 {
     NANOCLR_HEADER();
 
+    CLR_RT_HeapBlock *channel_settings = NULL;
     int32_t channel;
     uint8_t clockdiv = (uint8_t)stack.Arg1().NumericByRef().u1;
 
     CLR_RT_HeapBlock *pThis = stack.This();
     FAULT_ON_NULL(pThis);
 
-    channel = (int32_t)pThis[FIELD___channel].NumericByRef().s4;
+    // get a reference to the configs in the managed code instance
+    channel_settings = pThis[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannel::FIELD___settings].Dereference();
+    channel = channel_settings[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannelSettings::FIELD___channel].NumericByRef().s4;
+
     if (!CheckChannel(channel))
     {
         NANOCLR_SET_AND_LEAVE(CLR_E_OBJECT_DISPOSED);
@@ -64,19 +68,23 @@ HRESULT Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_E
 {
     NANOCLR_HEADER();
     {
+        CLR_RT_HeapBlock *channel_settings = NULL;
         int32_t channel;
         uint8_t rmt_mem_num;
 
         CLR_RT_HeapBlock *pThis = stack.This();
         FAULT_ON_NULL(pThis);
 
-        channel = (int32_t)pThis[FIELD___channel].NumericByRef().s4;
+        // get a reference to the configs in the managed code instance
+        channel_settings = pThis[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannel::FIELD___settings].Dereference();
+        channel = channel_settings[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannelSettings::FIELD___channel].NumericByRef().s4;
+
         if (!CheckChannel(channel))
         {
             NANOCLR_SET_AND_LEAVE(CLR_E_OBJECT_DISPOSED);
         }
 
-        rmt_mem_num = (uint8_t)pThis[FIELD___numberOfMemoryBlocks].NumericByRef().u1;
+        rmt_mem_num = (uint8_t)channel_settings[Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_RmtChannelSettings::FIELD___numberOfMemoryBlocks].NumericByRef().u1;
         auto err = rmt_set_mem_block_num((rmt_channel_t)channel, rmt_mem_num);
         if (err != ESP_OK)
         {

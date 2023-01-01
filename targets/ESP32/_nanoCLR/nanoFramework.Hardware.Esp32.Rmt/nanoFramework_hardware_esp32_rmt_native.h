@@ -68,8 +68,6 @@ struct Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Es
         rmt_item32_t *rmtItem,
         CLR_RT_HeapBlock *returnArray,
         CLR_RT_TypeDef_Index &rmtCommandTypeDef);
-
-    static esp_err_t InitRxChannel(rmt_channel_t channel, gpio_num_t gpio, int32_t rmtBufferSize, int32_t clockDiv);
 };
 
 struct Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Esp32_Rmt_ReceiverChannelSettings
@@ -137,8 +135,6 @@ struct Library_nanoFramework_hardware_esp32_rmt_native_nanoFramework_Hardware_Es
     NANOCLR_NATIVE_DECLARE(NativeTxDispose___VOID);
 
     //--//
-
-    static esp_err_t InitTxChannel(rmt_channel_t channel, gpio_num_t gpio);
 };
 
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Hardware_Esp32_Rmt;
