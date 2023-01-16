@@ -17,7 +17,7 @@
 #include <rmt.h>
 
 // Reduce line lengths
-#define CHANNEL(channel)  static_cast<rmt_channel_t>(channel)
+#define CHANNEL(channel) static_cast<rmt_channel_t>(channel)
 
 typedef enum __nfpack ChannelMode
 {
