@@ -10,6 +10,8 @@
 
 #include <esp32/rom/spi_flash.h>
 
+#include "esp_camera.h"
+
 HAL_SYSTEM_CONFIG HalSystemConfig = {
     {true}, // HAL_DRIVER_CONFIG_HEADER Header;
 

@@ -895,6 +895,14 @@ elseif(RTOS_ESP32_CHECK)
         message(STATUS "Support for Thread disabled")
     endif()
 
+    if(API_nanoFramework.Esp32.Camera)
+        set(ESP32_CAMERA_SUPPORT TRUE CACHE INTERNAL "ESP32 Camera Support")
+        message(STATUS "Support for ESP32 Camera enabled")
+    else()
+        set(ESP32_CAMERA_SUPPORT FALSE CACHE INTERNAL "No ESP32 Camera Support")
+        message(STATUS "Support for ESP32 Camera disabled")
+    endif()
+
     # check watchdog feature
     # ESP32 build has watchdog enabled by default, so setting it to OFF doesn't make sense 
     # because the build system can't honour that preference

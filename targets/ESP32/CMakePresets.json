@@ -12,6 +12,25 @@
     ],
     "configurePresets": [
         {
+            "name": "ESP32_CAMERA",
+            "inherits": [
+                "xtensa-esp32-preset",
+                "user-tools-repos",
+                "user-prefs"
+            ],
+            "hidden": false,
+            "cacheVariables": {
+                "TARGET_NAME": "${presetName}",
+                "SDK_CONFIG_FILE": "sdkconfig.default_rev3.esp32",
+                "NF_BUILD_RTM": "OFF",
+                "NF_FEATURE_DEBUGGER": "ON",
+                "NF_FEATURE_RTC": "ON",
+                "NF_FEATURE_HAS_SDCARD": "ON",
+                "API_nanoFramework.Device.OneWire": "ON",
+                "API_nanoFramework.Esp32.Camera": "ON"
+            }
+        },
+        {
             "name": "ESP32_PSRAM_REV0",
             "inherits": [
                 "xtensa-esp32-preset",
@@ -854,6 +873,12 @@
         }
     ],
     "buildPresets": [
+        {
+            "inherits": "base-user",
+            "name": "ESP32_CAMERA",
+            "displayName": "ESP32_CAMERA",
+            "configurePreset": "ESP32_CAMERA"
+        },
         {
             "inherits": "base-user",
             "name": "ESP32_PSRAM_REV0",

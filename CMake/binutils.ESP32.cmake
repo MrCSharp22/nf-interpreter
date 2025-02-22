@@ -599,7 +599,8 @@ macro(nf_add_idf_as_library)
     endif()
 
     nf_install_idf_component_from_registry(littlefs 4831aa41-8b72-48ac-a534-910a985a5519) 
-    
+    nf_install_idf_component_from_registry(esp32-camera 0e18ef24-5d57-4182-b9f7-4a068db0b455)
+
     include(${IDF_PATH_CMAKED}/tools/cmake/idf.cmake)
 
     # if needed, "fix" the reported version so it doesn't show '-dirty'
@@ -708,6 +709,11 @@ macro(nf_add_idf_as_library)
     if(HAL_USE_THREAD_OPTION)
         list(APPEND IDF_COMPONENTS_TO_ADD openthread)
         list(APPEND IDF_LIBRARIES_TO_ADD idf::openthread)
+    endif()
+
+    if(ESP32_CAMERA_SUPPORT)
+        list(APPEND IDF_COMPONENTS_TO_ADD esp32-camera)
+        list(APPEND IDF_LIBRARIES_TO_ADD idf::esp32-camera)
     endif()
 
     # handle specifics for ESP32S2/S3 series
